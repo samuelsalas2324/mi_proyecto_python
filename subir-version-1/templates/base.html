@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block titulo %}Quiz de Arquitecturas{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <header class="encabezado">
+    <div class="contenedor encabezado__interior">
+      <div class="marca">
+        <span class="marca__sello">IS-II</span>
+        <div>
+          <p class="marca__titulo">Quiz de Stack y Arquitecturas</p>
+          <p class="marca__sub">{{ asignatura }}</p>
+        </div>
+      </div>
+      <nav class="nav">
+        <a href="{{ url_for('index') }}">Inicio</a>
+        <a href="{{ url_for('quiz') }}">Cuestionario</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="contenedor principal">
+    {% block contenido %}{% endblock %}
+  </main>
+
+  <footer class="pie">
+    <div class="contenedor">
+      <p>Desarrollado por <strong>{{ estudiante }}</strong> — {{ asignatura }}</p>
+      <p class="pie__nota">Python · Flask · HTML · CSS · JavaScript</p>
+    </div>
+  </footer>
+
+  {% block scripts %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block titulo %}Inicio — Quiz de Arquitecturas{% endblock %}
+
+{% block contenido %}
+<section class="portada">
+  <p class="etiqueta">Evaluación práctica</p>
+  <h1 class="portada__titulo">Stack y Arquitecturas de Software</h1>
+  <p class="portada__texto">
+    Aplicación web construida con Python y Flask que incorpora un cuestionario
+    interactivo sobre los conceptos trabajados en clase: arquitectura hexagonal,
+    Clean Architecture, arquitecturas orientadas a eventos, monolito modular,
+    stack tecnológico y flujo de trabajo con Git, GitHub y Render.
+  </p>
+
+  <div class="tarjeta-autor">
+    <p class="tarjeta-autor__rol">Desarrollado por</p>
+    <p class="tarjeta-autor__nombre">{{ estudiante }}</p>
+    <p class="tarjeta-autor__rol">{{ asignatura }}</p>
+  </div>
+
+  <a class="boton boton--principal" href="{{ url_for('quiz') }}">
+    Comenzar el cuestionario ({{ total }} preguntas)
+  </a>
+</section>
+
+<section class="rejilla">
+  <article class="tarjeta">
+    <h2>Stack tecnológico</h2>
+    <ul>
+      <li><strong>Lenguaje:</strong> Python</li>
+      <li><strong>Backend:</strong> Flask</li>
+      <li><strong>Frontend:</strong> HTML, CSS y JavaScript</li>
+      <li><strong>Versionado:</strong> Git y GitHub</li>
+      <li><strong>Despliegue:</strong> Render</li>
+    </ul>
+  </article>
+
+  <article class="tarjeta">
+    <h2>Arquitectura</h2>
+    <p>
+      Monolito modular organizado según el patrón <strong>MVC</strong>. El modelo
+      contiene los datos del quiz, el controlador valida las respuestas y la vista
+      presenta la interfaz. La validación se realiza en el servidor, de modo que
+      las respuestas correctas nunca se envían al navegador.
+    </p>
+  </article>
+
+  <article class="tarjeta">
+    <h2>Funcionalidad</h2>
+    <ul>
+      <li>{{ total }} preguntas con cuatro opciones cada una.</li>
+      <li>Identificación de la opción seleccionada.</li>
+      <li>Retroalimentación inmediata y explicada.</li>
+      <li>Puntuación final con opción de reintentar.</li>
+    </ul>
+  </article>
+</section>
+{% endblock %}
