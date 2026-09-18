@@ -1,320 +1,900 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bienvenido a la Naturaleza | Flask App</title>
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Playfair+Display:ital,wght@0,600;0,800;1,400&display=swap"
-        rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz de Stack y Arquitecturas de Software</title>
+  <style>
+/* Versión 1 — Estética institucional / académica
+   Azul universitario, tipografía serif en títulos, tarjetas sobrias. */
 
-    <style>
-        :root {
-            --bg-gradient: linear-gradient(135deg, #0b2b1a 0%, #1b4332 40%, #2d6a4f 100%);
-            --card-bg: rgba(255, 255, 255, 0.08);
-            --card-border: rgba(255, 255, 255, 0.15);
-            --primary-light: #d8f3dc;
-            --accent-sage: #95d5b2;
-            --accent-green: #52b788;
-            --accent-gold: #e9c46a;
-            --text-main: #f8f9fa;
-            --text-sub: #b7e4c7;
-        }
+:root {
+  --azul: #123b6d;
+  --azul-oscuro: #0c2a4d;
+  --azul-claro: #e8eff8;
+  --dorado: #b78a2e;
+  --texto: #1c2430;
+  --texto-suave: #5a6675;
+  --borde: #d8dfe8;
+  --fondo: #f4f6f9;
+  --blanco: #ffffff;
+  --verde: #1d7a4d;
+  --verde-fondo: #e7f4ed;
+  --rojo: #b3261e;
+  --rojo-fondo: #fbeceb;
+  --radio: 6px;
+  --sombra: 0 1px 3px rgba(18, 59, 109, 0.08), 0 8px 24px rgba(18, 59, 109, 0.06);
+}
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+* { box-sizing: border-box; }
 
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background: var(--bg-gradient);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: var(--text-main);
-            overflow-x: hidden;
-            position: relative;
-            padding: 20px;
-        }
+body {
+  margin: 0;
+  background: var(--fondo);
+  color: var(--texto);
+  font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+}
 
-        /* SVG Background Decorations */
-        .bg-shape {
-            position: absolute;
-            z-index: 0;
-            opacity: 0.12;
-            pointer-events: none;
-        }
+h1, h2, h3 {
+  font-family: Georgia, "Times New Roman", serif;
+  color: var(--azul-oscuro);
+  line-height: 1.25;
+  margin: 0 0 12px;
+}
 
-        .bg-shape-1 {
-            top: -50px;
-            left: -50px;
-            width: 400px;
-        }
+.contenedor {
+  width: min(960px, 100% - 32px);
+  margin: 0 auto;
+}
 
-        .bg-shape-2 {
-            bottom: -80px;
-            right: -50px;
-            width: 450px;
-        }
+/* ---------- Encabezado ---------- */
 
-        /* Container Principal */
-        .container {
-            position: relative;
-            z-index: 1;
-            max-width: 900px;
-            width: 100%;
-            background: var(--card-bg);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid var(--card-border);
-            border-radius: 28px;
-            padding: 60px 40px;
-            text-align: center;
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.35);
-            animation: fadeIn 1s ease-out;
-        }
+.encabezado {
+  background: var(--azul);
+  color: var(--blanco);
+  border-bottom: 4px solid var(--dorado);
+}
 
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
+.encabezado__interior {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 0;
+  flex-wrap: wrap;
+}
 
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+.marca {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
 
-        /* Header e Icono Principal */
-        .hero-icon-wrapper {
-            display: inline-flex;
-            justify-content: center;
-            align-items: center;
-            width: 96px;
-            height: 96px;
-            background: linear-gradient(135deg, rgba(82, 183, 136, 0.2), rgba(149, 213, 178, 0.4));
-            border: 1px solid rgba(149, 213, 178, 0.4);
-            border-radius: 50%;
-            margin-bottom: 24px;
-            box-shadow: 0 10px 25px rgba(82, 183, 136, 0.25);
-            transition: transform 0.4s ease;
-        }
+.marca__sello {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border: 2px solid var(--dorado);
+  border-radius: 50%;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.5px;
+}
 
-        .hero-icon-wrapper:hover {
-            transform: scale(1.08) rotate(5deg);
-        }
+.marca__titulo {
+  margin: 0;
+  font-family: Georgia, serif;
+  font-size: 18px;
+}
 
-        .hero-icon {
-            width: 52px;
-            height: 52px;
-            fill: var(--accent-sage);
-        }
+.marca__sub {
+  margin: 0;
+  font-size: 13px;
+  color: #b9cce4;
+}
 
-        /* Tipografía Grande */
-        h1 {
-            font-family: 'Playfair Display', serif;
-            font-size: 3.5rem;
-            font-weight: 800;
-            line-height: 1.15;
-            background: linear-gradient(135deg, #ffffff 30%, var(--accent-sage) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 16px;
-            letter-spacing: -0.5px;
-        }
+.nav {
+  display: flex;
+  gap: 8px;
+}
 
-        .subtitle {
-            font-size: 1.25rem;
-            color: var(--text-sub);
-            max-width: 640px;
-            margin: 0 auto 40px auto;
-            line-height: 1.6;
-            font-weight: 400;
-        }
+.nav a {
+  color: var(--blanco);
+  text-decoration: none;
+  padding: 8px 14px;
+  border-radius: var(--radio);
+  font-size: 14px;
+  transition: background 0.2s;
+}
 
-        /* Cuadrícula de Tarjetas con SVGs */
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 20px;
-            margin-top: 30px;
-        }
+.nav a:hover { background: rgba(255, 255, 255, 0.14); }
 
-        .feature-card {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 20px;
-            padding: 28px 20px;
-            transition: all 0.3s ease;
-            text-align: center;
-        }
+.principal { padding: 40px 0 64px; }
 
-        .feature-card:hover {
-            background: rgba(255, 255, 255, 0.1);
-            transform: translateY(-6px);
-            border-color: var(--accent-green);
-            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
-        }
+/* ---------- Portada ---------- */
 
-        .card-icon {
-            width: 44px;
-            height: 44px;
-            margin-bottom: 16px;
-            fill: var(--accent-green);
-        }
+.etiqueta {
+  margin: 0 0 8px;
+  text-transform: uppercase;
+  letter-spacing: 1.6px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--dorado);
+}
 
-        .feature-card h3 {
-            font-size: 1.15rem;
-            color: var(--primary-light);
-            margin-bottom: 8px;
-            font-weight: 700;
-        }
+.portada {
+  background: var(--blanco);
+  border: 1px solid var(--borde);
+  border-top: 4px solid var(--azul);
+  border-radius: var(--radio);
+  padding: 40px;
+  box-shadow: var(--sombra);
+  margin-bottom: 28px;
+}
 
-        .feature-card p {
-            font-size: 0.92rem;
-            color: var(--text-sub);
-            line-height: 1.5;
-        }
+.portada__titulo { font-size: 34px; }
 
-        /* Badge de Servidor */
-        .status-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 8px 18px;
-            background: rgba(45, 106, 79, 0.6);
-            border: 1px solid var(--accent-green);
-            border-radius: 50px;
-            font-size: 0.88rem;
-            color: var(--primary-light);
-            font-weight: 600;
-            margin-bottom: 20px;
-        }
+.portada__texto {
+  max-width: 68ch;
+  color: var(--texto-suave);
+  margin: 0 0 24px;
+}
 
-        .status-dot {
-            width: 10px;
-            height: 10px;
-            background-color: var(--accent-green);
-            border-radius: 50%;
-            box-shadow: 0 0 10px var(--accent-green);
-            animation: pulse 2s infinite;
-        }
+.tarjeta-autor {
+  display: inline-block;
+  border-left: 3px solid var(--dorado);
+  background: var(--azul-claro);
+  padding: 14px 22px;
+  border-radius: 0 var(--radio) var(--radio) 0;
+  margin-bottom: 26px;
+}
 
-        @keyframes pulse {
-            0% {
-                transform: scale(0.95);
-                box-shadow: 0 0 0 0 rgba(82, 183, 136, 0.7);
-            }
+.tarjeta-autor__rol {
+  margin: 0;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--texto-suave);
+}
 
-            70% {
-                transform: scale(1);
-                box-shadow: 0 0 0 8px rgba(82, 183, 136, 0);
-            }
+.tarjeta-autor__nombre {
+  margin: 2px 0;
+  font-family: Georgia, serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--azul-oscuro);
+}
 
-            100% {
-                transform: scale(0.95);
-                box-shadow: 0 0 0 0 rgba(82, 183, 136, 0);
-            }
-        }
+/* ---------- Tarjetas ---------- */
 
-        /* Responsivo */
-        @media (max-width: 600px) {
-            .container {
-                padding: 40px 24px;
-            }
+.rejilla {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 18px;
+}
 
-            h1 {
-                font-size: 2.3rem;
-            }
+.tarjeta {
+  background: var(--blanco);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+  padding: 24px;
+  box-shadow: var(--sombra);
+}
 
-            .subtitle {
-                font-size: 1.05rem;
-            }
-        }
-    </style>
+.tarjeta h2 { font-size: 19px; }
+
+.tarjeta ul {
+  margin: 0;
+  padding-left: 18px;
+  color: var(--texto-suave);
+}
+
+.tarjeta li { margin-bottom: 6px; }
+
+.tarjeta p { margin: 0; color: var(--texto-suave); }
+
+/* ---------- Botones ---------- */
+
+.boton {
+  display: inline-block;
+  border: 1px solid transparent;
+  border-radius: var(--radio);
+  padding: 12px 24px;
+  font-size: 15px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.2s, color 0.2s, transform 0.1s;
+}
+
+.boton:active { transform: translateY(1px); }
+
+.boton--principal {
+  background: var(--azul);
+  color: var(--blanco);
+}
+
+.boton--principal:hover { background: var(--azul-oscuro); }
+
+.boton--principal:disabled {
+  background: #a8b6c7;
+  cursor: not-allowed;
+}
+
+.boton--secundario {
+  background: var(--blanco);
+  color: var(--azul);
+  border-color: var(--azul);
+}
+
+.boton--secundario:hover { background: var(--azul-claro); }
+
+/* ---------- Quiz ---------- */
+
+.quiz {
+  background: var(--blanco);
+  border: 1px solid var(--borde);
+  border-top: 4px solid var(--azul);
+  border-radius: var(--radio);
+  padding: 36px;
+  box-shadow: var(--sombra);
+}
+
+.quiz__cabecera {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+  flex-wrap: wrap;
+  border-bottom: 1px solid var(--borde);
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+}
+
+.quiz__titulo { font-size: 26px; margin-bottom: 4px; }
+
+.quiz__autor {
+  margin: 0;
+  font-size: 14px;
+  color: var(--texto-suave);
+}
+
+.marcador {
+  text-align: center;
+  background: var(--azul-claro);
+  border-radius: var(--radio);
+  padding: 10px 20px;
+  min-width: 108px;
+}
+
+.marcador__valor {
+  font-family: Georgia, serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--azul);
+}
+
+.marcador__total { color: var(--texto-suave); font-size: 16px; }
+
+.marcador__rotulo {
+  margin: 0;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--texto-suave);
+}
+
+.progreso {
+  height: 8px;
+  background: var(--azul-claro);
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.progreso__barra {
+  height: 100%;
+  width: 0;
+  background: linear-gradient(90deg, var(--azul), var(--dorado));
+  transition: width 0.35s ease;
+}
+
+.contador {
+  margin: 10px 0 24px;
+  font-size: 13px;
+  color: var(--texto-suave);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.tema {
+  margin: 0 0 6px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--dorado);
+}
+
+.enunciado {
+  font-size: 23px;
+  margin-bottom: 24px;
+}
+
+/* ---------- Opciones ---------- */
+
+.opciones {
+  display: grid;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.opcion {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+  padding: 14px 18px;
+  cursor: pointer;
+  background: var(--blanco);
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.opcion:hover { border-color: var(--azul); background: #fafcff; }
+
+.opcion input { display: none; }
+
+.opcion__letra {
+  display: grid;
+  place-items: center;
+  flex: 0 0 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--azul-claro);
+  color: var(--azul);
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.opcion--activa {
+  border-color: var(--azul);
+  background: var(--azul-claro);
+}
+
+.opcion--activa .opcion__letra {
+  background: var(--azul);
+  color: var(--blanco);
+}
+
+.opcion--correcta {
+  border-color: var(--verde);
+  background: var(--verde-fondo);
+}
+
+.opcion--correcta .opcion__letra { background: var(--verde); color: var(--blanco); }
+
+.opcion--incorrecta {
+  border-color: var(--rojo);
+  background: var(--rojo-fondo);
+}
+
+.opcion--incorrecta .opcion__letra { background: var(--rojo); color: var(--blanco); }
+
+/* ---------- Retroalimentación ---------- */
+
+.acciones { display: flex; gap: 12px; flex-wrap: wrap; }
+.acciones--centro { justify-content: center; }
+
+.feedback {
+  margin-top: 22px;
+  border-left: 4px solid var(--azul);
+  background: var(--azul-claro);
+  border-radius: 0 var(--radio) var(--radio) 0;
+  padding: 16px 20px;
+}
+
+.feedback--ok { border-left-color: var(--verde); background: var(--verde-fondo); }
+.feedback--error { border-left-color: var(--rojo); background: var(--rojo-fondo); }
+
+.feedback__titulo {
+  margin: 0 0 6px;
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.feedback--ok .feedback__titulo { color: var(--verde); }
+.feedback--error .feedback__titulo { color: var(--rojo); }
+
+.feedback__texto { margin: 0; color: var(--texto); font-size: 15px; }
+
+/* ---------- Resultado ---------- */
+
+.resultado { text-align: center; padding: 30px 0 10px; }
+
+.resultado__puntaje {
+  font-family: Georgia, serif;
+  font-size: 64px;
+  font-weight: 700;
+  color: var(--azul);
+  margin: 6px 0;
+}
+
+.resultado__mensaje {
+  color: var(--texto-suave);
+  margin: 0 auto 26px;
+  max-width: 46ch;
+}
+
+/* ---------- Pie ---------- */
+
+.pie {
+  background: var(--azul-oscuro);
+  color: #c8d6e8;
+  padding: 26px 0;
+  font-size: 14px;
+  text-align: center;
+}
+
+.pie p { margin: 2px 0; }
+.pie strong { color: var(--blanco); }
+.pie__nota { font-size: 12px; color: #8ba4c2; }
+
+.oculto { display: none !important; }
+
+@media (max-width: 600px) {
+  .portada, .quiz { padding: 24px 20px; }
+  .portada__titulo { font-size: 26px; }
+  .enunciado { font-size: 20px; }
+  .resultado__puntaje { font-size: 48px; }
+}
+
+  </style>
 </head>
-
 <body>
+  <header class="encabezado">
+    <div class="contenedor encabezado__interior">
+      <div class="marca">
+        <span class="marca__sello">IS-II</span>
+        <div>
+          <p class="marca__titulo">Quiz de Stack y Arquitecturas</p>
+          <p class="marca__sub">Ingeniería de Software II</p>
+        </div>
+      </div>
+      <nav class="nav">
+        <a href="#" data-vista="inicio">Inicio</a>
+        <a href="#" data-vista="quiz">Cuestionario</a>
+      </nav>
+    </div>
+  </header>
 
-    <!-- SVG Fondo Decorativo 1: Hojas -->
-    <svg class="bg-shape bg-shape-1" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-        <path fill="#52B788"
-            d="M44.7,-67.6C56.9,-58.5,65.1,-44.6,70.7,-29.9C76.3,-15.1,79.2,0.6,76.5,15.6C73.8,30.6,65.4,45,53.8,55.3C42.2,65.6,27.3,71.8,11.5,73.6C-4.3,75.4,-21.1,72.7,-35.8,65.1C-50.5,57.5,-63.1,45,-70.6,29.9C-78.1,14.8,-80.5,-2.9,-76.3,-19C-72.1,-35.1,-61.3,-49.6,-47.5,-58.4C-33.7,-67.2,-16.9,-70.3,-0.1,-70.2C16.6,-70.1,32.5,-76.7,44.7,-67.6Z"
-            transform="translate(100 100)" />
-    </svg>
+  <main class="contenedor principal">
 
-    <!-- SVG Fondo Decorativo 2: Montañas/Ramas -->
-    <svg class="bg-shape bg-shape-2" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-        <path fill="#74C69D"
-            d="M38.1,-52.3C49.7,-43.8,60,-32.8,65.2,-19.4C70.4,-6.1,70.4,9.6,64.8,23.3C59.2,37,47.9,48.7,34.7,56.7C21.4,64.7,6.3,69,-9.2,70.3C-24.7,71.6,-40.5,69.9,-52.8,61.4C-65.1,52.8,-73.8,37.3,-76.2,20.8C-78.6,4.3,-74.6,-13.3,-66.1,-27.8C-57.6,-42.3,-44.5,-53.8,-30.7,-61.2C-16.9,-68.5,-2.4,-71.7,10.6,-68C23.6,-64.3,26.5,-60.8,38.1,-52.3Z"
-            transform="translate(100 100)" />
-    </svg>
+    <!-- ===================== VISTA: INICIO ===================== -->
+    <div id="vista-inicio">
+      <section class="portada">
+        <p class="etiqueta">Evaluación práctica</p>
+        <h1 class="portada__titulo">Stack y Arquitecturas de Software</h1>
+        <p class="portada__texto">
+          Aplicación web con un cuestionario interactivo sobre los conceptos
+          trabajados en clase: arquitectura hexagonal, Clean Architecture,
+          arquitecturas orientadas a eventos, monolito modular, stack tecnológico
+          y flujo de trabajo con Git, GitHub y Render.
+        </p>
 
-    <div class="container">
-
-        <!-- Estado del Servidor -->
-        <div class="status-badge">
-            <span class="status-dot"></span>
-            Servidor Flask Activo & Corriendo
+        <div class="tarjeta-autor">
+          <p class="tarjeta-autor__rol">Desarrollado por</p>
+          <p class="tarjeta-autor__nombre" data-estudiante></p>
+          <p class="tarjeta-autor__rol">Ingeniería de Software II</p>
         </div>
 
-        <!-- Icono Principal SVG: Árbol de la Vida -->
-        <div class="hero-icon-wrapper">
-            <svg class="hero-icon" viewBox="0 0 24 24">
-                <path
-                    d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,4A8,8 0 0,1 20,12C20,14.4 18.9,16.5 17.2,18C15.8,16.6 13.9,15.6 12,15.6C10.1,15.6 8.2,16.6 6.8,18C5.1,16.5 4,14.4 4,12A8,8 0 0,1 12,4M12,6C9.8,6 8,7.8 8,10C8,12.2 9.8,14 12,14C14.2,14 16,12.2 16,10C16,7.8 14.2,6 12,6Z" />
-            </svg>
-        </div>
+        <a class="boton boton--principal" href="#" id="btn-comenzar">
+          Comenzar el cuestionario (<span data-total></span> preguntas)
+        </a>
+      </section>
 
-        <!-- Título Principal Centrado y Grande -->
-        <h1>¡Bienvenido a la Experiencia Flask!</h1>
-        <p class="subtitle">Tu aplicación en Python está lista, conectada y lista para florecer en un entorno armónico
-            con los colores de la naturaleza.</p>
+      <section class="rejilla">
+        <article class="tarjeta">
+          <h2>Stack tecnológico</h2>
+          <ul>
+            <li><strong>Lenguaje:</strong> Python</li>
+            <li><strong>Backend:</strong> Flask</li>
+            <li><strong>Frontend:</strong> HTML, CSS y JavaScript</li>
+            <li><strong>Versionado:</strong> Git y GitHub</li>
+            <li><strong>Despliegue:</strong> Render</li>
+          </ul>
+        </article>
 
-        <!-- Cuadrícula con SVGs Ilustrativos -->
-        <div class="features-grid">
+        <article class="tarjeta">
+          <h2>Arquitectura</h2>
+          <p>
+            Monolito modular organizado según el patrón <strong>MVC</strong>. El modelo
+            contiene los datos del quiz, el controlador valida las respuestas y la vista
+            presenta la interfaz.
+          </p>
+        </article>
 
-            <!-- Tarjeta 1: Hoja / Crecimiento -->
-            <div class="feature-card">
-                <svg class="card-icon" viewBox="0 0 24 24">
-                    <path
-                        d="M17,8C8,10 59,16.17 3.82,21.34L5.23,22.75C11.4,17.58 14,9 17,8M12.43,15.58C12.12,14.6 11.5,13.62 10.5,12.75C8.16,10.68 4.79,10.29 2,11C2.5,13.88 3.5,17 6.5,18.88C8.13,19.9 9.89,20 11.38,19.62L12.43,15.58M17,3C12,3 8.44,6.25 7.08,9.77C9.37,9.75 11.83,10.5 13.75,12.2C15.67,13.9 16.5,16.32 16.29,18.61C19.68,16.94 22,13.2 22,8.5C22,5.4 19.5,3 17,3Z" />
-                </svg>
-                <h3>Diseño Orgánico</h3>
-                <p>Estilos inspirados en bosques, vegetación y paletas armónicas relajantes.</p>
-            </div>
-
-            <!-- Tarjeta 2: Montaña / Solidez -->
-            <div class="feature-card">
-                <svg class="card-icon" viewBox="0 0 24 24">
-                    <path d="M14,6L10.25,11L13.1,14.8L11.5,16C9.81,13.75 7,10 7,10L1,18H23L14,6Z" />
-                </svg>
-                <h3>Estructura Firme</h3>
-                <p>Potenciado por la solidez y velocidad del backend en Python y Flask.</p>
-            </div>
-
-            <!-- Tarjeta 3: Agua / Fluidez -->
-            <div class="feature-card">
-                <svg class="card-icon" viewBox="0 0 24 24">
-                    <path d="M12,20A6,6 0 0,1 6,14C6,10 12,3.25 12,3.25C12,3.25 18,10 18,14A6,6 0 0,1 12,20Z" />
-                </svg>
-                <h3>Fluidez Visual</h3>
-                <p>Efectos modernos de cristal, sombras suaves e interacciones responsivas.</p>
-
-            </div>
-
-        </div>
-        <p align="center">Creado por Feibert Alirio Guzmán Pérez</p>
+        <article class="tarjeta">
+          <h2>Funcionalidad</h2>
+          <ul>
+            <li><span data-total></span> preguntas con cuatro opciones cada una.</li>
+            <li>Identificación de la opción seleccionada.</li>
+            <li>Retroalimentación inmediata y explicada.</li>
+            <li>Puntuación final con opción de reintentar.</li>
+          </ul>
+        </article>
+      </section>
     </div>
 
-</body>
+    <!-- ===================== VISTA: QUIZ ===================== -->
+    <div id="vista-quiz" class="oculto">
+      <section class="quiz" id="quiz">
+        <div class="quiz__cabecera">
+          <div>
+            <p class="etiqueta">Cuestionario</p>
+            <h1 class="quiz__titulo">Stack y Arquitecturas de Software</h1>
+            <p class="quiz__autor">Desarrollado por <span data-estudiante></span></p>
+          </div>
+          <div class="marcador">
+            <span class="marcador__valor" id="marcador">0</span>
+            <span class="marcador__total">/ <span data-total></span></span>
+            <p class="marcador__rotulo">Aciertos</p>
+          </div>
+        </div>
 
+        <div class="progreso"><div class="progreso__barra" id="barra"></div></div>
+        <p class="contador" id="contador"></p>
+
+        <div id="panel-pregunta">
+          <p class="tema" id="tema"></p>
+          <h2 class="enunciado" id="enunciado"></h2>
+          <form id="opciones" class="opciones" onsubmit="return false"></form>
+
+          <div class="acciones">
+            <button class="boton boton--principal" id="btn-responder" disabled>Responder</button>
+            <button class="boton boton--secundario oculto" id="btn-siguiente">Siguiente</button>
+          </div>
+
+          <div class="feedback oculto" id="feedback">
+            <p class="feedback__titulo" id="feedback-titulo"></p>
+            <p class="feedback__texto" id="feedback-texto"></p>
+          </div>
+        </div>
+
+        <div id="panel-resultado" class="resultado oculto">
+          <p class="etiqueta">Resultado final</p>
+          <p class="resultado__puntaje"><span id="resultado-aciertos">0</span> / <span data-total></span></p>
+          <p class="resultado__mensaje" id="resultado-mensaje"></p>
+          <div class="acciones acciones--centro">
+            <button class="boton boton--principal" id="btn-reiniciar">Reintentar</button>
+            <a class="boton boton--secundario" href="#" data-vista="inicio">Volver al inicio</a>
+          </div>
+        </div>
+      </section>
+    </div>
+
+  </main>
+
+  <footer class="pie">
+    <div class="contenedor">
+      <p>Desarrollado por <strong data-estudiante></strong> — Ingeniería de Software II</p>
+      <p class="pie__nota">Python · Flask · HTML · CSS · JavaScript</p>
+    </div>
+  </footer>
+
+  <script>
+  (function () {
+    "use strict";
+
+    /* ============ CAMBIA TU NOMBRE AQUÍ ============ */
+    var ESTUDIANTE = "NOMBRE DEL ESTUDIANTE";
+    /* ================================================ */
+
+    /* Banco de preguntas (modelo). En este archivo único la validación
+       se hace en el navegador; en la versión Flask se hace en el servidor. */
+    var PREGUNTAS = [
+      {
+            "id": 1,
+            "tema": "Arquitectura hexagonal",
+            "enunciado": "¿Qué representan los puertos en la arquitectura hexagonal?",
+            "opciones": {
+                  "A": "Bases de datos utilizadas por la aplicación",
+                  "B": "Interfaces mediante las cuales el núcleo se comunica con el exterior",
+                  "C": "Servidores encargados del despliegue",
+                  "D": "Componentes exclusivos del frontend"
+            },
+            "correcta": "B",
+            "retroalimentacion": "Los puertos son interfaces: definen el contrato mediante el cual el núcleo de la aplicación se comunica con el exterior, sin depender de una tecnología concreta."
+      },
+      {
+            "id": 2,
+            "tema": "Clean Architecture",
+            "enunciado": "¿Cuál es la regla principal de Clean Architecture?",
+            "opciones": {
+                  "A": "Las dependencias apuntan hacia la infraestructura",
+                  "B": "Las dependencias del código deben apuntar hacia el núcleo",
+                  "C": "Toda aplicación debe utilizar microservicios",
+                  "D": "El frontend debe controlar la base de datos"
+            },
+            "correcta": "B",
+            "retroalimentacion": "La regla de dependencia indica que el código fuente siempre apunta hacia adentro: la infraestructura depende del dominio y nunca al revés."
+      },
+      {
+            "id": 3,
+            "tema": "Arquitectura orientada a eventos",
+            "enunciado": "¿Qué caracteriza a una arquitectura orientada a eventos?",
+            "opciones": {
+                  "A": "Productores, consumidores e intermediario o bus de eventos",
+                  "B": "Únicamente un servidor central",
+                  "C": "Únicamente bases de datos relacionales",
+                  "D": "Una estructura obligatoria de tres capas"
+            },
+            "correcta": "A",
+            "retroalimentacion": "En EDA los productores publican eventos, un bus o broker los distribuye y los consumidores reaccionan, lo que permite desacoplar los componentes."
+      },
+      {
+            "id": 4,
+            "tema": "Stack tecnológico",
+            "enunciado": "¿Qué se entiende por Stack tecnológico?",
+            "opciones": {
+                  "A": "La combinación de lenguajes, frameworks, bases de datos, herramientas y servicios",
+                  "B": "Únicamente el lenguaje utilizado",
+                  "C": "Únicamente el framework backend",
+                  "D": "El diseño visual de una aplicación"
+            },
+            "correcta": "A",
+            "retroalimentacion": "El stack es el conjunto completo de tecnologías que sostienen la aplicación, desde el lenguaje hasta el servicio de despliegue."
+      },
+      {
+            "id": 5,
+            "tema": "Monolito modular",
+            "enunciado": "¿Cuál es una característica del monolito modular?",
+            "opciones": {
+                  "A": "Cada módulo debe ejecutarse en un servidor independiente",
+                  "B": "Organiza internamente las responsabilidades en módulos definidos",
+                  "C": "No permite utilizar diferentes componentes",
+                  "D": "Siempre utiliza un bus de eventos"
+            },
+            "correcta": "B",
+            "retroalimentacion": "El monolito modular se despliega como una sola unidad, pero mantiene fronteras internas claras entre sus módulos."
+      },
+      {
+            "id": 6,
+            "tema": "Arquitectura hexagonal",
+            "enunciado": "¿Cuál es el propósito de un adaptador en arquitectura hexagonal?",
+            "opciones": {
+                  "A": "Convertir la comunicación externa para ajustarse al contrato de un puerto",
+                  "B": "Crear automáticamente bases de datos",
+                  "C": "Sustituir al núcleo de la aplicación",
+                  "D": "Administrar usuarios de GitHub"
+            },
+            "correcta": "A",
+            "retroalimentacion": "El adaptador traduce entre el mundo exterior (HTTP, SQL, colas) y el contrato definido por el puerto, de modo que el núcleo no cambie."
+      },
+      {
+            "id": 7,
+            "tema": "Git y GitHub",
+            "enunciado": "¿Cuál es el propósito principal de un Pull Request?",
+            "opciones": {
+                  "A": "Solicitar revisión e integración de cambios en un repositorio",
+                  "B": "Crear una máquina virtual",
+                  "C": "Ejecutar Python",
+                  "D": "Crear una base de datos"
+            },
+            "correcta": "A",
+            "retroalimentacion": "El Pull Request propone integrar los cambios de una rama en otra y abre el espacio de revisión y discusión del código."
+      },
+      {
+            "id": 8,
+            "tema": "Despliegue",
+            "enunciado": "¿Qué evidencia demuestra un despliegue exitoso en Render?",
+            "opciones": {
+                  "A": "Una captura del código fuente",
+                  "B": "El enlace público funcional y evidencia del proceso de despliegue",
+                  "C": "Únicamente el repositorio local",
+                  "D": "Una captura del editor de código"
+            },
+            "correcta": "B",
+            "retroalimentacion": "El despliegue se demuestra con la URL pública funcionando y el log de build/deploy exitoso en Render."
+      }
+];
+
+    var LETRAS = ["A", "B", "C", "D"];
+    var total = PREGUNTAS.length;
+
+    var indice = 0;
+    var aciertos = 0;
+    var seleccion = null;
+    var bloqueado = false;
+
+    function $(id) { return document.getElementById(id); }
+
+    var el = {
+      tema: $("tema"), enunciado: $("enunciado"), opciones: $("opciones"),
+      contador: $("contador"), barra: $("barra"), marcador: $("marcador"),
+      feedback: $("feedback"), feedbackTitulo: $("feedback-titulo"),
+      feedbackTexto: $("feedback-texto"), btnResponder: $("btn-responder"),
+      btnSiguiente: $("btn-siguiente"), btnReiniciar: $("btn-reiniciar"),
+      panelPregunta: $("panel-pregunta"), panelResultado: $("panel-resultado"),
+      resultadoAciertos: $("resultado-aciertos"), resultadoMensaje: $("resultado-mensaje"),
+      vistaInicio: $("vista-inicio"), vistaQuiz: $("vista-quiz")
+    };
+
+    /* ---------- Datos que se repiten en la página ---------- */
+    Array.prototype.forEach.call(document.querySelectorAll("[data-estudiante]"), function (n) {
+      n.textContent = ESTUDIANTE;
+    });
+    Array.prototype.forEach.call(document.querySelectorAll("[data-total]"), function (n) {
+      n.textContent = total;
+    });
+    document.title = "Quiz de Arquitecturas — " + ESTUDIANTE;
+
+    /* ---------- Navegación entre vistas ---------- */
+    function mostrarVista(nombre) {
+      el.vistaInicio.classList.toggle("oculto", nombre !== "inicio");
+      el.vistaQuiz.classList.toggle("oculto", nombre !== "quiz");
+      window.scrollTo(0, 0);
+    }
+
+    Array.prototype.forEach.call(document.querySelectorAll("[data-vista]"), function (a) {
+      a.addEventListener("click", function (e) {
+        e.preventDefault();
+        mostrarVista(a.getAttribute("data-vista"));
+      });
+    });
+
+    $("btn-comenzar").addEventListener("click", function (e) {
+      e.preventDefault();
+      reiniciar();
+      mostrarVista("quiz");
+    });
+
+    /* ---------- Validación (equivale al controlador) ---------- */
+    function verificar(pregunta, letra) {
+      var correcta = letra === pregunta.correcta;
+      return {
+        correcta: correcta,
+        opcion_correcta: pregunta.correcta,
+        texto_correcto: pregunta.opciones[pregunta.correcta],
+        retroalimentacion: pregunta.retroalimentacion
+      };
+    }
+
+    /* ---------- Vista del quiz ---------- */
+    function crearOpcion(letra, texto) {
+      var etiqueta = document.createElement("label");
+      etiqueta.className = "opcion";
+      etiqueta.dataset.letra = letra;
+
+      var radio = document.createElement("input");
+      radio.type = "radio";
+      radio.name = "opcion";
+      radio.value = letra;
+
+      var spanLetra = document.createElement("span");
+      spanLetra.className = "opcion__letra";
+      spanLetra.textContent = letra;
+
+      var spanTexto = document.createElement("span");
+      spanTexto.className = "opcion__texto";
+      spanTexto.textContent = texto;
+
+      etiqueta.appendChild(radio);
+      etiqueta.appendChild(spanLetra);
+      etiqueta.appendChild(spanTexto);
+
+      etiqueta.addEventListener("click", function (e) {
+        e.preventDefault();
+        if (bloqueado) return;
+        seleccion = letra;
+        marcarSeleccion(letra);
+        el.btnResponder.disabled = false;
+      });
+
+      return etiqueta;
+    }
+
+    function pintarPregunta() {
+      var pregunta = PREGUNTAS[indice];
+      seleccion = null;
+      bloqueado = false;
+
+      el.tema.textContent = pregunta.tema;
+      el.enunciado.textContent = pregunta.enunciado;
+      el.contador.textContent = "Pregunta " + (indice + 1) + " de " + total;
+      el.barra.style.width = (indice / total) * 100 + "%";
+
+      el.opciones.innerHTML = "";
+      LETRAS.forEach(function (letra) {
+        el.opciones.appendChild(crearOpcion(letra, pregunta.opciones[letra]));
+      });
+
+      el.feedback.classList.add("oculto");
+      el.feedback.classList.remove("feedback--ok", "feedback--error");
+      el.btnResponder.classList.remove("oculto");
+      el.btnResponder.disabled = true;
+      el.btnSiguiente.classList.add("oculto");
+      el.btnSiguiente.textContent = indice === total - 1 ? "Ver resultado" : "Siguiente";
+    }
+
+    function marcarSeleccion(letra) {
+      Array.prototype.forEach.call(el.opciones.querySelectorAll(".opcion"), function (op) {
+        op.classList.toggle("opcion--activa", op.dataset.letra === letra);
+      });
+    }
+
+    function responder() {
+      if (!seleccion || bloqueado) return;
+      bloqueado = true;
+      el.btnResponder.disabled = true;
+
+      var datos = verificar(PREGUNTAS[indice], seleccion);
+
+      Array.prototype.forEach.call(el.opciones.querySelectorAll(".opcion"), function (op) {
+        var letra = op.dataset.letra;
+        if (letra === datos.opcion_correcta) op.classList.add("opcion--correcta");
+        if (letra === seleccion && !datos.correcta) op.classList.add("opcion--incorrecta");
+      });
+
+      if (datos.correcta) {
+        aciertos += 1;
+        el.marcador.textContent = aciertos;
+        el.feedback.classList.add("feedback--ok");
+        el.feedbackTitulo.textContent = "Respuesta correcta";
+      } else {
+        el.feedback.classList.add("feedback--error");
+        el.feedbackTitulo.textContent =
+          "Respuesta incorrecta. La opción correcta era " +
+          datos.opcion_correcta + ": " + datos.texto_correcto;
+      }
+      el.feedbackTexto.textContent = datos.retroalimentacion;
+
+      el.feedback.classList.remove("oculto");
+      el.btnResponder.classList.add("oculto");
+      el.btnSiguiente.classList.remove("oculto");
+      el.barra.style.width = ((indice + 1) / total) * 100 + "%";
+    }
+
+    function siguiente() {
+      if (indice === total - 1) { mostrarResultado(); return; }
+      indice += 1;
+      pintarPregunta();
+    }
+
+    function mensajeSegunPuntaje(p) {
+      if (p === 100) return "Excelente: dominas los conceptos de stack y arquitecturas.";
+      if (p >= 70) return "Buen resultado. Repasa los temas en los que fallaste.";
+      if (p >= 50) return "Vas por buen camino, pero conviene repasar la teoría del curso.";
+      return "Es recomendable revisar nuevamente los conceptos vistos en clase.";
+    }
+
+    function mostrarResultado() {
+      el.panelPregunta.classList.add("oculto");
+      el.panelResultado.classList.remove("oculto");
+      el.resultadoAciertos.textContent = aciertos;
+      el.barra.style.width = "100%";
+      el.contador.textContent = "Cuestionario finalizado";
+      el.resultadoMensaje.textContent = mensajeSegunPuntaje((aciertos / total) * 100);
+    }
+
+    function reiniciar() {
+      indice = 0;
+      aciertos = 0;
+      el.marcador.textContent = "0";
+      el.panelResultado.classList.add("oculto");
+      el.panelPregunta.classList.remove("oculto");
+      pintarPregunta();
+    }
+
+    el.btnResponder.addEventListener("click", function (e) { e.preventDefault(); responder(); });
+    el.btnSiguiente.addEventListener("click", function (e) { e.preventDefault(); siguiente(); });
+    el.btnReiniciar.addEventListener("click", reiniciar);
+
+    pintarPregunta();
+  })();
+  </script>
+</body>
 </html>
